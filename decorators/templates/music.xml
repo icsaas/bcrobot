@@ -1,0 +1,23 @@
+<xml>
+    <ToUserName><![CDATA[{{ ToUserName }}]]></ToUserName>
+    <FromUserName><![CDATA[{{ FromUserName }}]]></FromUserName>
+    <CreateTime>{{ CreateTime }}</CreateTime>
+    <MsgType><![CDATA[{{ MsgType }}]]></MsgType>
+    <Music>
+        {% if Title %}
+        <Title><![CDATA[{{ Title }}]]></Title>
+        {% endif %}
+        {% if Description %}
+        <Description><![CDATA[{{ Description }}]]></Description>
+        {% endif %}
+        {% if MusicURL %}
+        <MusicUrl><![CDATA[{{ MusicURL }}]]></MusicUrl>
+        {% endif %}
+        {% if HQMusicUrl %}
+        <HQMusicUrl><![CDATA[{{ HQMusicUrl }}]]></HQMusicUrl>
+        {% endif %}
+        {% if ThumbMediaId %}
+        <ThumbMediaId><![CDATA[{{ ThumbMediaId }}]]></ThumbMediaId>
+        {% endif %}
+    </Music>
+</xml>
