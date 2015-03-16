@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.conf import settings
 from bearychat.models import Subscribe
+from utils.tianqi import  weather
 import requests
 import json
 
@@ -33,31 +34,33 @@ def outcome(request):
     message='输入有误，请输入justpic help继续操作'
     if bcdata['text'].startswith('justpic'):
         cmd=str(bcdata['text']).split()
-        if cmd[1]=='sub':
+        if len(cmd)>1 and cmd[1]=='sub':
             #store the bearychat room info: subscribe info
-            if cmd[2] is not None:
+            if len(cmd)>2:
                 sub=Subscribe()
                 sub.username=bcdata['user_name']
                 sub.channel=bcdata['channel_name']
                 sub.url=cmd[2]
                 sub.save()
+                message='订阅推送成功！'
             else:
-                message='请重新输入，不支持该操作！'
-        elif cmd[1]=='cancel':
-            bcdata['user_name'],bcdata['channel_name']
-            pass
-        elif cmd[1]=='wx':
-            pass
-        elif cmd[1]=='tianqi':
-            pass
-        elif cmd[1]=='help':
-            message='help'
+                message='命令justpic sub <incoming url>！'
+        elif len(cmd)>1 and cmd[1]=='cancel':
+            Subscribe.objects.filter(username=bcdata['user_name'],channel=bcdata['channel_name']).delete()
+        elif len(cmd)>1 and cmd[1]=='wx':
+            message='justpic wx users--显示微信关注用户  justpic wx news--显示微信推送消息 justpic wx message <userid>--显示特定用户发送的消息'
+            if len(cmd)>2 and cmd[2]=='users':
+                pass
+        elif len(cmd)>1 and cmd[1]=='tianqi':
+            city=cmd[2] if len(cmd)>2 else '重庆'
+            message=weather(city)
+        elif len(cmd)>1 and cmd[1]=='help':
+            message='justpic sub <incomgin url>--订阅推送  justpic cancel--取消订阅推送  justpic wx--微信公众号信息查看  justpic tianqi <city>--天气预报'
         else:
-            message='输入有误，请输入justpic help继续操作'
-
-    elif bcdata['text'].startswith('history'):
-        pass
+            message='输入有误，请输入justpic help查看帮助'
+    elif 'help' in bcdata['text']:
+        message='help message'
     else:
-        pass
-    data = {'text': "text, this field may accept markdown",'attachments': [{'title': "title_1",'text': "attachment_text",'color': "#ffffff",}]}
+        message="目前仅支持justpic，请输入"+str(bcdata['text'])+" help查看帮助"
+    data = {"text": "message","attachments":[{"title":"Star Wars III","text":"Return of the Jedi","color":"#ffa500"}]}
     return HttpResponse(json.dumps(data))

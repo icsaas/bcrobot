@@ -10,17 +10,18 @@ import json
 # Create your views here.
 def home(request):
     #method1 post json to the server
-    # payload={"text":"caohai123","attachments":[{"title":"Star Wars III","text":"Return of the Jedi","color":"#ffa500"}]}
-    # headers = {'content=type': 'application/json'}
-    # r=requests.post(settings.BC_WEBHOOK,json=payload,headers=headers)
-
+    payload={"text":"caohai123","attachments":[{"title":"Star Wars III","text":"Return of the Jedi","color":"#ffa500"}]}
+    headers = {'content=type': 'application/json'}
+    r=requests.post(settings.BC_WEBHOOK,json=payload,headers=headers)
+    if r.ok:
+        return render_to_response('index.html')
     #method2 post payload form data to server
-    data = {"payload": '{"text":"haha"}'}
-    session = requests.Session()
-    r2 = session.post(url=settings.BC_WEBHOOK, data=data)
-    print r2
-    if r2.ok:
-        return render_to_response("index.html")
+    # data = {"payload": '{"text":"haha"}'}
+    # session = requests.Session()
+    # r2 = session.post(url=settings.BC_WEBHOOK, data=data)
+    # print r2
+    # if r2.ok:
+    #     return render_to_response("index.html")
 
 #trial for bearychat OutComing Robot
 @csrf_exempt

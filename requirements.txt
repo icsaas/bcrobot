@@ -1,3 +1,6 @@
 django
 requests
 lxml
+redis
+celery
+django-celery

@@ -1,7 +1,8 @@
+#-*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from decorators.weixin import weixin_required
-from weixin.models import User,New
+from weixin.models import User,Message,New
 # Create your views here.
 
 #user processor
@@ -42,9 +43,7 @@ def user_update(request):
             zhuangtai_ma = request['zhuangtai_ma'],
             zhuangtai_time = request['zhuangtai_time']
         )
-
     u.save()
-
 
 def news(request,meiyegeshu,dijiye):
     meiyegeshu = int(meiyegeshu)+1
@@ -181,6 +180,5 @@ def weixin(request):
             xiaoxi = home_help
 
     user_update(re_user)
-
     return xiaoxi
 
