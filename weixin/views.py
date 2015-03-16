@@ -92,6 +92,7 @@ def index(request):
 @weixin_required
 def weixin(request):
     # 常量定义
+    print request
     home_help = {
         'FromUserName':request['ToUserName'],
         'ToUserName':request['FromUserName'],

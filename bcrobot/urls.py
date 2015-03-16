@@ -6,6 +6,7 @@ urlpatterns = patterns('',
     # Examples:
     url(r'^$', 'bcrobot.views.home', name='home'),
     # url(r'^out','bcrobot.views.out',name='out'),
+    #production usage
     url(r'^outcome','bearychat.views.outcome',name='outcome'),
     url(r'^ingo','bearychat.views.ingo',name='ingo'),
     url(r'^weixin','weixin.views.weixin'),

@@ -18,7 +18,6 @@ import sys
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '4d0#&50kh$i&3fb^wwp*3hhq33*zp$(hno1^a1f)*83-oe25(r'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

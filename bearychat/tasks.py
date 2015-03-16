@@ -15,14 +15,20 @@ def add(x, y):
 
 @celery.task
 def publish(message):
+    payload={"text":message,"attachments":[{"title":"Star Wars III","text":"Return of the Jedi","color":"#ffa500"}]}
     headers = {'content=type': 'application/json'}
-    data = {"payload": '{"text":"notify from celery"}'}
-    session = requests.Session()
-    r2 = session.post(url=settings.BC_WEBHOOK, data=data)
-    if r2.ok:
+    r=requests.post(settings.BC_WEBHOOK,json=payload,headers=headers)
+    if r.ok:
         return True
     else:
         return False
+    # data = {"payload": '{"text":"notify from celery"}'}
+    # session = requests.Session()
+    # r2 = session.post(url=settings.BC_WEBHOOK, data=data)
+    # if r2.ok:
+    #     return True
+    # else:
+    #     return False
 
 @celery.task
 def server_report():

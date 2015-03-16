@@ -2,6 +2,7 @@
 from django.db import models
 from django.db.models.signals import post_save
 from django.conf import  settings
+from bearychat.models import Subscribe
 import requests
 # Create your models here.
 
@@ -18,6 +19,7 @@ def notify_user(sender, instance, created, **kwargs):
         headers = {'content=type': 'application/json'}
         data = {"payload": '{"text":"new user"}'}
         session = requests.Session()
+        #notify all subscribers
         r2 = session.post(url=settings.BC_WEBHOOK, data=data)
         if r2.ok:
             return True
@@ -40,7 +42,6 @@ class New(models.Model):
     #
     # def __unicode__(self):
     #     return (unicode(self.Title),unicode(self.Description))
-
     class Meta:
         ordering = ['-Chuangjianshijian']
 
@@ -49,6 +50,7 @@ def notify_news(sender, instance, created, **kwargs):
         headers = {'content=type': 'application/json'}
         data = {"payload": '{"text":"haha"}'}
         session = requests.Session()
+        #notify all subscribers
         r2 = session.post(url=settings.BC_WEBHOOK, data=data)
         if r2.ok:
             return True

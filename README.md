@@ -3,17 +3,18 @@ bcrobot
 ###bcrobot是一个建立在BearyChat的消息机器人，主要实现了以下功能：
 1.微信和BearyChat消息的互相通信（仅限微信公众平台），主要实现了以下子功能：
   当微信公众号被关注时，微信后台发布内容或者用户发消息时，BearyChat能够即时得到通知  
-  在BearyChat中得到hacknews新闻后，可以转发微信公众新闻消息，并接收用户发布给微信的消息。
+  在BearyChat中得到hacknews新闻后，可以转发给微信公众新闻消息。
 2.订阅推送服务  
 （使用OutComing机器人发送Incoming机器人的地址）  
   在BearyChat中可以实时的接收服务器发出的消息，能够实时监控服务器的运行情况。
 3.天气预报  
  输入城市，可以查看今天和明天的天气预报
-4.hacknews信息浏览  
+4.hacknews信息浏览，订阅推送后会每日得到hacknews更新，也可以输入命令即时查看hacknews。  
 5.备忘录(Todo)  
 6.虚拟币价目信息查看(Todo)  
-7.检索功能/siri(Todo)
-   
+7.检索功能/siri(Todo)  
+8.微博消息发送(Todo)  
+
 ###使用方法：  
 下面以pydata微信公众号为例，介绍相关使用方法：   
 1.微信扫码 ![pydata](media/image/qrcode.jpg)  
@@ -35,8 +36,9 @@ bcrobot
 2.cd bcrobot && pip install -r requirements.txt  
 3.python manage.py validate && python manage.py syncdb  
 4.python manage.py runserver 8000  
-5.编辑nginx配置文件，并重新启动nginx  
-6.进入[微信公众平台](https://mp.weixin.qq.com)进入开发者中心设置服务器地址  
+5.编辑nginx配置文件，并重新启动nginx
+6.启动redis-server，启动celery任务  
+7.点击[微信公众平台](https://mp.weixin.qq.com)进入开发者中心设置服务器地址  
 
 
 
