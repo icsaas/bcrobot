@@ -12,8 +12,8 @@ celery.autodiscover_tasks(settings.INSTALLED_APPS, related_name='tasks')
 CELERYBEAT_SCHEDULE = {
     'every-minute': {
         'task': 'bearychat.tasks.server_report',
-        'schedule': timedelta(seconds=10),
-        # 'schedule': crontab(hour='*/1'),
+        # 'schedule': timedelta(seconds=10),
+        'schedule': crontab(hour='*/12'),
     },
 }
 

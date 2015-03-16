@@ -111,6 +111,6 @@ def outcome(request):
         message = "目前仅支持justpic，请输入" + str(bcdata['text']) + " help查看帮助"
     data = {"text": message, "markdown": True,
             "attachments": [{"title": "", "text": "Cool,Attachments supported in Outcoming robot", "color": "#ffa500"}]}
-    data = {"text": message, "markdown": True,
-            "attachments": [{"title": "Star Wars III", "text": "Return of the Jedi", "color": "#ffa500"}]}
+    # data = {"text": message, "markdown": True,
+    #         "attachments": [{"title": "Star Wars III", "text": "Return of the Jedi", "color": "#ffa500"}]}
     return HttpResponse(json.dumps(data))
