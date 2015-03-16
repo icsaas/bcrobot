@@ -4,7 +4,7 @@ from xml.dom.minidom import parseString
 
 
 def weather(city):
-    if isinstance(unicode,city):
+    if isinstance(city,unicode):
         city=city.encode('utf-8')
     page = urllib.urlopen(
         "http://www.webxml.com.cn/webservices/weatherwebservice.asmx/getWeatherbyCityName?theCityName=" + city);
@@ -43,5 +43,5 @@ def getText(nodelist):
 
 
 if __name__ == "__main__":
-    weather = weather()
+    weather = weather(city=u'重庆')
     print weather

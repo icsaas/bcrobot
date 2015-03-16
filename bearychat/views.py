@@ -35,17 +35,21 @@ def outcome(request):
     print bcdata
     print bcdata['text'],bcdata['user_name'],bcdata['trigger_word'],bcdata['token'],bcdata['ts'],bcdata['channel_name']
     message='输入有误，请输入justpic help继续操作'
+    print type(bcdata['text'])
     if bcdata['text'].startswith('justpic'):
-        cmd=str(bcdata['text']).split()
+        cmd=bcdata['text'].split()
         if len(cmd)>1 and cmd[1]=='sub':
             #store the bearychat room info: subscribe info
             if len(cmd)>2:
-                sub=Subscribe()
-                sub.username=bcdata['user_name']
-                sub.channel=bcdata['channel_name']
-                sub.url=cmd[2]
-                sub.save()
-                message='订阅推送成功！'
+                try:
+                    sub=Subscribe()
+                    sub.username=bcdata['user_name']
+                    sub.channel=bcdata['channel_name']
+                    sub.url=cmd[2]
+                    sub.save()
+                    message='订阅推送成功！'
+                except Exception,e:
+                    message='订阅推送失败！'
             else:
                 message='命令justpic sub <incoming url>！'
         elif len(cmd)>1 and cmd[1]=='cancel':
@@ -54,17 +58,17 @@ def outcome(request):
             message='justpic wx users--显示微信关注用户  justpic wx news--显示微信推送消息 justpic wx message <userid>--显示特定用户发送的消息'
             if len(cmd)>2 and cmd[2]=='users':
                 pass
-        elif len(cmd)>1 and cmd[1]=='tianqi':
+        elif len(cmd)>1 and cmd[1]=='weather':
             city=cmd[2] if len(cmd)>2 else '重庆'
-            print city
             message=weather(city)
         elif len(cmd)>1 and cmd[1]=='help':
-            message='justpic sub <incomgin url>--订阅推送  justpic cancel--取消订阅推送  justpic wx--微信公众号信息查看  justpic tianqi <city>--天气预报'
+            message='justpic sub <incomgin url>--订阅推送  justpic cancel--取消订阅推送  justpic wx--微信公众号管理  justpic weather <city>--天气预报'
         else:
             message='输入有误，请输入justpic help查看帮助'
     elif 'help' in bcdata['text']:
         message='help message'
     else:
         message="目前仅支持justpic，请输入"+str(bcdata['text'])+" help查看帮助"
-    data = {"text": "message","markdown":True,"attachments":[{"title":"Star Wars III","text":"Return of the Jedi","color":"#ffa500"}]}
+    data={"text":message,"markdown":True,"attachments":[{"title":"","text":"Cool,Attachments supported in Outcoming robot","color":"#ffa500"}]}
+    data = {"text": message,"markdown":True,"attachments":[{"title":"Star Wars III","text":"Return of the Jedi","color":"#ffa500"}]}
     return HttpResponse(json.dumps(data))
