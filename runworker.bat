@@ -1,1 +1,1 @@
- celery worker --concurrency=1 --config=celeryconfig --loglevel=info --autoreload
+ celery worker   --config=celeryconfig --loglevel=info --concurrency=2

@@ -20,11 +20,16 @@ def notify_user(sender, instance, created, **kwargs):
         data = {"payload": '{"text":"new user"}'}
         session = requests.Session()
         #notify all subscribers
-        r2 = session.post(url=settings.BC_WEBHOOK, data=data)
-        if r2.ok:
-            return True
-        else:
-            return False
+        subscribers=Subscribe.objects.all()
+        for item in subscribers:
+            r=session.post(url=item.url,data=data)
+            if not r.ok:
+                print 'subscribe error in notify user'
+        # r2 = session.post(url=settings.BC_WEBHOOK, data=data)
+        # if r2.ok:
+        #     return True
+        # else:
+        #     return False
         
 post_save.connect(notify_user, sender=User)
 
@@ -38,7 +43,7 @@ class New(models.Model):
     Description = models.CharField(max_length=120,blank=True,null=True,verbose_name='图文描述')
     PicUrl = models.URLField(verbose_name='图片链接')
     Url = models.URLField(verbose_name='网页链接')
-    Chuangjianshijian = models.DateField(verbose_name='图文消息创建时间')
+    Chuangjianshijian = models.DateTimeField(verbose_name='图文消息创建时间')
     #
     # def __unicode__(self):
     #     return (unicode(self.Title),unicode(self.Description))
@@ -48,13 +53,18 @@ class New(models.Model):
 def notify_news(sender, instance, created, **kwargs):
     if created:
         headers = {'content=type': 'application/json'}
-        data = {"payload": '{"text":"haha"}'}
+        data = {"payload": '{"text":"微信有新闻已发布，可以输入justpic wx news查看最新新闻"}'}
         session = requests.Session()
         #notify all subscribers
-        r2 = session.post(url=settings.BC_WEBHOOK, data=data)
-        if r2.ok:
-            return True
-        else:
-            return False
+        subscribers=Subscribe.objects.all()
+        for item in subscribers:
+            r=session.post(url=item.url,data=data)
+            if not r.OK:
+                print 'subscribe error in notify news'
+        # r2 = session.post(url=settings.BC_WEBHOOK, data=data)
+        # if r2.ok:
+        #     return True
+        # else:
+        #     return False
 
 post_save.connect(notify_news, sender=New)
