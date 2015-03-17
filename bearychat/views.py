@@ -5,6 +5,7 @@ from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 from bearychat.models import Subscribe
 from weixin.models import User, New, Message
 from utils.tianqi import weather
@@ -49,7 +50,7 @@ def outcome(request):
                     sub = Subscribe.objects.get(token=bcdata['token'])
                     if sub is not None:
                         message = '已订阅推送，请尝试其他操作'
-                except Exception, e:
+                except ObjectDoesNotExist, e:
                     sub = Subscribe(
                         username=bcdata['user_name'],
                         channel=bcdata['channel_name'],
@@ -64,6 +65,13 @@ def outcome(request):
             Subscribe.objects.filter(username=bcdata['user_name'], channel=bcdata['channel_name'],
                                      token=bcdata['token']).delete()
             message = '取消推送成功'
+        elif len(cmd)>1 and cmd[1]=='stauts':
+            subscriber=Subscribe.objects.filter(usernames=bcdata['user_name'],channel=bcdata['channel_name'],
+                                                token=bcdata['token'])
+            if subscriber.count()>0:
+                message='已订阅推送服务'
+            else:
+                message='未订阅推送服务'
         elif len(cmd) > 1 and cmd[1] == 'wx':
             message = 'justpic wx users--显示微信关注用户  justpic wx news--显示微信推送消息 ' \
                       'justpic wx message <userid>--显示特定用户发送的消息 ' \
@@ -97,7 +105,6 @@ def outcome(request):
                     message = "新闻发送失败，更正后重新发送"
             else:
                 message = "输入justpic wx查看相关功能"
-
         elif len(cmd) > 1 and cmd[1] == 'weather':
             city = cmd[2] if len(cmd) > 2 else '重庆'
             message = weather(city)

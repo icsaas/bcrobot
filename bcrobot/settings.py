@@ -109,6 +109,7 @@ TEMPLATE_DIRS = (
     os.path.join(PROJECT_ROOT, '../templates'),
     os.path.join(PROJECT_ROOT,'../decorators/templates'),
 )
+STATIC_ROOT=os.path.join(PROJECT_ROOT,'../static')
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
