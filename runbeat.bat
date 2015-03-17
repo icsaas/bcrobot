@@ -1,1 +1,1 @@
- celery beat  -A bearychat.tasks --config=celeryconfig --loglevel=info
+ celery beat  --config=celeryconfig --loglevel=info
