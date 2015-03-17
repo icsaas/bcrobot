@@ -9,7 +9,8 @@ bcrobot
   在BearyChat中可以实时的接收服务器发出的消息，能够实时监控服务器的运行情况。
 3.天气预报  
  输入城市，可以查看今天和明天的天气预报
-4.hacknews信息浏览，订阅推送后会每日得到hacknews更新，也可以输入命令即时查看hacknews。  
+4.hacknews信息浏览，订阅推送后会每日得到hacknews更新，也可以输入命令即时查看hacknews。
+5.BearyChat外部用户聊天。
 
 
 ###使用方法：  
@@ -26,6 +27,8 @@ bcrobot
 8.在聊天对话框中输入justpic memo add <content> --记录备忘录,justpic memo list --显示备忘录条目 justpic memo remove <memoid> 删除备忘录条目  
 9.在聊天对话框中输入justpic price btc cny查看btc cny的报价。
 10.在聊天对话框中输入justpic cancel http://hook.bearychat.com/<your_webhook_url>,取消订阅推送服务。  
+11.在聊天对话框中输入justpic status 查看订阅推送服务状态
+12.在聊天对话狂中输入justpic chat <message>可以与BearyChat外部用户进行聊天
 
 ###部署指南
 （部署于外部服务器）  
