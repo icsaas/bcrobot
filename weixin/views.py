@@ -44,6 +44,7 @@ def user_update(request):
             zhuangtai_time = request['zhuangtai_time']
         )
     u.save()
+    return u
 
 def news(request,meiyegeshu,dijiye):
     meiyegeshu = int(meiyegeshu)+1
@@ -101,7 +102,7 @@ def weixin(request):
         'Content':'''欢迎关注JustPic微信
 回复：
     1 进入justpic菜单
-    help 查看帮助
+    help 查看帮助，更多信息请前往<a>http://justpic.org</a>
 其他功能我们正在开发ing'''
     }
     lishitueisong_help = {
@@ -147,6 +148,9 @@ def weixin(request):
         pass
 
     # 对状态和消息判断需要返回信息
+    #store message
+    message=Message(user=re_user,message=request['Content'],sendtime=request['CreateTime'])
+    message.save()
     if re_user['zhuangtai'] == 'home':
         if request['Content'] == '1':
             re_user['zhuangtai'] = 'lishitueisong'
