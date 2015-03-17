@@ -140,7 +140,9 @@ def outcome(request):
                 message+=mess
             if message!="":
                 message="HackerNews  "+message
-                message+=u"没有获取到内容，可通过订阅hackernews推送服务可获得更好体验"
+                message+=u"没有获取到内容，或者受限于attachments，可通过订阅hackernews推送服务可获得更好体验"
+            else:
+                message=bcdata['user_name']+" "+message
 
         elif len(cmd) > 1 and cmd[1] == 'help':
             message = u'bcrobot sub <incomgin url> subtype--订阅推送  ' \

@@ -17,7 +17,7 @@ class User(models.Model):
 def notify_user(sender, instance, created, **kwargs):
     if created:
         headers = {'content=type': 'application/json'}
-        data = {"payload": '{"text":"new user"}'}
+        data = {"payload": '{"text":"微信有新用户关注，请查看"}'}
         session = requests.Session()
         #notify all subscribers
         subscribers=Subscriber.objects.filter(subtype='weixin')
