@@ -116,8 +116,6 @@ def outcome(request):
                 except Exception, e:
                     print e
                     message = "新闻发送失败，更正后重新发送"
-            else:
-                message = "输入bcrobot wx查看相关功能"
         elif len(cmd) > 1 and cmd[1] == 'weather':
             city = cmd[2] if len(cmd) > 2 else '重庆'
             message = weather(city)

@@ -12,16 +12,18 @@ celery.autodiscover_tasks(settings.INSTALLED_APPS, related_name='tasks')
 CELERYBEAT_SCHEDULE = {
     'every-day': {
         'task': 'bearychat.tasks.server_report',
-        # 'schedule': timedelta(seconds=10),
-        'schedule': crontab(hour='*/12'),
+        'schedule': timedelta(seconds=10),
+        # 'schedule': crontab(hour='*/12'),
+
     },
     'every-moments':{
         'task':'bearychat.tasks.publish_hn',
-        'schedule':timedelta(minutes=15),
+        'schedule':timedelta(seconds=10),
     },
     'every-night':{
         'task':'bearychat.tasks.publish_weather',
-        'schedule':crontab(hour='*/24'),
+        'schedule':timedelta(seconds=10),
+        # 'schedule':crontab(hour='*/24'),
     }
 }
 

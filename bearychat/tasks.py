@@ -38,7 +38,7 @@ def server_report():
     for item in subscribers:
         data['text']=item.username+" "+data['text']
         # r=requests.post(item.url,json=data,headers=headers )
-        r=requests.post(settings.BC_WEBHOOK,data={'payload':json.dumps(data)})
+        r=requests.post(item.url,data={'payload':json.dumps(data)})
 
         print r
         if not r.ok:
@@ -64,7 +64,7 @@ def publish_hn():
     for item in subscribers:
         data['text']=item.username+" "+data['text']
         # r=requests.post(item.url,json=data,headers=headers )
-        r=requests.post(settings.BC_WEBHOOK,data={'payload':json.dumps(data)})
+        r=requests.post(item.url,data={'payload':json.dumps(data)})
 
         print r
         if not r.ok:
@@ -80,7 +80,7 @@ def publish_weather():
     for item in subscribers:
         data['text']=item.username+" "+data['text']
         # r=requests.post(item.url,json=data,headers=headers )
-        r=requests.post(settings.BC_WEBHOOK,data={'payload':json.dumps(data)})
+        r=requests.post(item.url,data={'payload':json.dumps(data)})
 
         print r
         if not r.ok:
