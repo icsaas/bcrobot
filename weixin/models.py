@@ -7,7 +7,7 @@ import requests
 # Create your models here.
 
 class User(models.Model):
-    userid=models.AutoField(primary_key=True)
+    # userid=models.AutoField(primary_key=True)
     FromUserName = models.CharField(max_length=30,verbose_name='发出消息者')
     CreateTime = models.CharField(max_length=15,verbose_name='消息创建时间')
     zhuangtai = models.CharField(max_length=20,blank=True,null=True,verbose_name='状态')
