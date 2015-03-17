@@ -118,6 +118,7 @@ def outcome(request):
         elif len(cmd) > 1 and cmd[1] == 'weather':
             city = cmd[2] if len(cmd) > 2 else '重庆'
             message = weather(city)
+            message="city "+message
         elif len(cmd) > 1 and cmd[1] == 'help':
             message = 'bcrobot sub <incomgin url>--订阅推送  ' \
                       'bcrobot cancel--取消订阅推送 ' \
