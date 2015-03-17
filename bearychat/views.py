@@ -18,7 +18,7 @@ from datetime import datetime
 # Create your views here.
 def ingo(request):
     # method1 post json to the server
-    data = {"text": "caohai123",
+    data = {"text": "Test123",
                "attachments": [{"title": "Star Wars III", "text": "Return of the Jedi", "color": "#ffa500"}]}
     # headers = {'content=type': 'application/json'}
     # r = requests.post(settings.BC_WEBHOOK, json=data, headers=headers)
@@ -40,7 +40,7 @@ def ingo(request):
 @csrf_exempt
 def outcome(request):
     bcdata = json.loads(request.body)
-    message = '输入有误，bcrobot help继续操作'
+    message = u'输入有误，bcrobot help继续操作'
     if bcdata['text'].startswith('bcrobot'):
         cmd = bcdata['text'].split()
         if len(cmd) > 1 and cmd[1] == 'sub':
@@ -49,7 +49,7 @@ def outcome(request):
                 try:
                     sub = Subscriber.objects.get(username=bcdata['user_name'], channel=bcdata['channel_name'],url=cmd[2],token=bcdata['token'],subtype=cmd[3])
                     if sub is not None:
-                        message = '已订阅推送，请尝试其他操作'
+                        message = u'已订阅推送，请尝试其他操作'
                 except Exception, e:
                     sub = Subscriber(
                         username=bcdata['user_name'],
@@ -59,12 +59,12 @@ def outcome(request):
                         subtype=cmd[3]
                     )
                     sub.save()
-                    message = '订阅推送成功！'
+                    message = u'订阅推送成功！'
             else:
-                message = '命令bcrobot sub <incoming url> <subtype>  subtype可为weixin hacknews server weather'
+                message =u'命令bcrobot sub <incoming url> <subtype>  subtype可为weixin hacknews server weather'
         elif len(cmd) > 1 and cmd[1] == 'cancel':
             if len(cmd) == 2:
-                message = '请指定取消推送消息类型 weixin hackernews server weather'
+                message = u'请指定取消推送消息类型 weixin hackernews server weather'
             else:
                 if cmd[2] != 'all':
                     sub = Subscriber.objects.filter(username=bcdata['user_name'], channel=bcdata['channel_name'],
@@ -73,21 +73,21 @@ def outcome(request):
                     sub = Subscriber.objects.filter(username=bcdata['user_name'], channel=bcdata['channel_name'],
                                                     token=bcdata['token'])
                 if sub == []:
-                    message = "您还没有订阅推送"
+                    message = u"您还没有订阅推送"
                 else:
                     sub.delete()
-                    message = '取消推送成功'
+                    message = u'取消推送成功'
         elif len(cmd) > 1 and cmd[1] == 'status':
             try:
                 subscriber = Subscriber.objects.get(username=bcdata['user_name'], channel=bcdata['channel_name'],
                                                     token=bcdata['token'])
-                message = '已订阅推送服务'
+                message = u'已订阅推送服务'
             except Exception, e:
-                message = '未订阅推送服务'
+                message = u'未订阅推送服务'
         elif len(cmd) > 1 and cmd[1] == 'wx':
-            message = 'bcrobot wx users--显示微信关注用户  bcrobot wx news--显示微信推送消息 ' \
-                      'bcrobot wx message <userid>--显示特定用户发送的消息 ' \
-                      'bcrobot wx pub <title> <description> <picurl> <fromurl>--发布微信新闻消息'
+            message = u'bcrobot wx users--显示微信关注用户  bcrobot wx news--显示微信推送消息 ' \
+                      u'bcrobot wx message <userid>--显示特定用户发送的消息 ' \
+                      u'bcrobot wx pub <title> <description> <picurl> <fromurl>--发布微信新闻消息'
             if len(cmd) > 2 and cmd[2] == 'users':
                 users = User.objects.all()
                 usernames = [item.FromUserName for item in users]
@@ -112,33 +112,33 @@ def outcome(request):
                         Url=cmd[6],
                         Chuangjianshijian=datetime.now())
                     new.save()
-                    message = "新闻发送成功"
+                    message = u"新闻发送成功"
                 except Exception, e:
                     print e
-                    message = "新闻发送失败，更正后重新发送"
+                    message = u"新闻发送失败，更正后重新发送"
         elif len(cmd) > 1 and cmd[1] == 'weather':
             city = cmd[2] if len(cmd) > 2 else '重庆'
             message = weather(city)
             message="city "+message
         elif len(cmd) > 1 and cmd[1] == 'help':
-            message = 'bcrobot sub <incomgin url> subtype--订阅推送  ' \
-                      'bcrobot cancel--取消订阅推送 ' \
-                      'bcrobot status--查看订阅状态 ' \
-                      'bcrobot wx--微信公众号管理  ' \
-                      'bcrobot weather <city>--天气预报  '
+            message = u'bcrobot sub <incomgin url> subtype--订阅推送  ' \
+                      u'bcrobot cancel--取消订阅推送 ' \
+                      u'bcrobot status--查看订阅状态 ' \
+                      u'bcrobot wx--微信公众号管理  ' \
+                      u'bcrobot weather <city>--天气预报  '
 
         else:
-            message = '输入有误，bcrobot help查看帮助 或者查看https://gitcafe.com/matrixorz/bcrobot 了解详细情况'
+            message = u'输入有误，bcrobot help查看帮助 或者查看https://gitcafe.com/matrixorz/bcrobot 了解详细情况'
     elif 'help' in bcdata['text']:
-        message = 'bcrobot sub <incomgin url> subtype--订阅推送  ' \
-                  'bcrobot cancel--取消订阅推送 ' \
-                  'bcrobot status--查看订阅状态 ' \
-                  'bcrobot wx--微信公众号管理  ' \
-                  'bcrobot weather <city>--天气预报  '
+        message = u'bcrobot sub <incomgin url> subtype--订阅推送  ' \
+                  u'bcrobot cancel--取消订阅推送 ' \
+                  u'bcrobot status--查看订阅状态 ' \
+                  u'bcrobot wx--微信公众号管理  ' \
+                  u'bcrobot weather <city>--天气预报  '
     else:
-        message = "目前仅支持bcrobot，请输入" + str(bcdata['text']) + " help查看帮助"
+        message = u"目前仅支持bcrobot命令，请输入 bcrobot help查看帮助"
     data = {"text": message, "markdown": True,
-            "attachments": [{"title": "", "text": "Cool,Attachments supported in Outcoming robot", "color": "#ffa500"}]}
+            "attachments": [{"title": "", "text": "Cool! Attachments supported in Outcoming robot please inform matrix.orz@gmail.com to support bcrobot", "color": "#ffa500"}]}
     # data = {"text": message, "markdown": True,
     # "attachments": [{"title": "Star Wars III", "text": "Return of the Jedi", "color": "#ffa500"}]}
     return HttpResponse(json.dumps(data))

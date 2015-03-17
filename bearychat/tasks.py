@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 import  requests
 # from django.conf import settings
 # from celery import Celery
@@ -30,8 +31,8 @@ def add(x, y):
     #     return False
 
 @celery.task
-def server_report():
-    data={"text":"来自服务器的消息","attachments":[{"title":"服务器运行状况","text":"正常","color":"#ffa500"}]}
+def publish_server():
+    data={"text":u"来自服务器的消息","attachments":[{"title":u"服务器运行状况","text":u"正常","color":"#ffa500"}]}
     headers = {'content=type': 'application/json'}
     #notify all user
     subscribers=Subscriber.objects.filter(subtype='server')

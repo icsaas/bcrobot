@@ -13,7 +13,7 @@ def hn(request):
     print bcdata
     print bcdata['text'], bcdata['user_name'], bcdata['trigger_word'], bcdata['token'], bcdata['ts'], bcdata[
         'channel_name']
-    message = '输入有误，bcrobot help继续操作'
+    message = u'输入有误，bcrobot help继续操作'
     print type(bcdata['text'])
     api=HackerNewsAPI()
     stories=[]
@@ -29,18 +29,18 @@ def hn(request):
     elif cmd == "best":
         stories = api.getBestStories(extra_page=1)
     elif cmd=='help':
-        message = 'hacknews <top newest best> 三选一'
+        message = u'hacknews <top newest best> 三选一'
     message=""
     for item in stories:
         mess="["+item.title+"]("+item.URL+")  "
         message+=mess
     if message!="":
         message="HackerNews  "+message
-        message+="订阅hacknews推送服务可获得更好体验"
+        message+=u"订阅hacknews推送服务可获得更好体验"
     else:
         message="No HackerNews found"
     data = {"text": message, "markdown": True,
-            "attachments": [{"title": "", "text": "Cool,Attachments supported in Outcoming robot", "color": "#ffa500"}]}
+            "attachments": [{"title": "", "text": "Cool! Attachments supported in Outcoming robot please inform matrix.orz@gmail.com to support bcrobot", "color": "#ffa500"}]}
     return HttpResponse(json.dumps(data))
 
 
