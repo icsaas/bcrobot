@@ -10,11 +10,19 @@ celery.config_from_object("celeryconfig")
 celery.autodiscover_tasks(settings.INSTALLED_APPS, related_name='tasks')
 
 CELERYBEAT_SCHEDULE = {
-    'every-minute': {
+    'every-day': {
         'task': 'bearychat.tasks.server_report',
         # 'schedule': timedelta(seconds=10),
         'schedule': crontab(hour='*/12'),
     },
+    'every-moments':{
+        'task':'bearychat.tasks.publish_hn',
+        'schedule':timedelta(minutes=15),
+    },
+    'every-night':{
+        'task':'bearychat.tasks.publish_weather',
+        'schedule':crontab(hour='*/24'),
+    }
 }
 
 BROKER_URL = "redis://localhost:6379/0"

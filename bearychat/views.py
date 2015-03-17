@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-from bearychat.models import Subscribe
+from bearychat.models import Subscriber
 from weixin.models import User, New, Message
 from utils.tianqi import weather
 import requests
@@ -38,38 +38,42 @@ def ingo(request):
 @csrf_exempt
 def outcome(request):
     bcdata = json.loads(request.body)
-    print bcdata
-    print bcdata['text'], bcdata['user_name'], bcdata['trigger_word'], bcdata['token'], bcdata['ts'], bcdata[
-        'channel_name']
     message = '输入有误，bcrobot help继续操作'
-    print type(bcdata['text'])
     if bcdata['text'].startswith('bcrobot'):
         cmd = bcdata['text'].split()
         if len(cmd) > 1 and cmd[1] == 'sub':
             #store the bearychat room info: subscribe info
-            if len(cmd) > 2:
+            if len(cmd) > 3:
                 try:
-                    sub = Subscribe.objects.get(token=bcdata['token'])
+                    sub = Subscriber.objects.get(usernames=bcdata['user_name'],token=bcdata['token'])
                     if sub is not None:
                         message = '已订阅推送，请尝试其他操作'
                 except ObjectDoesNotExist, e:
-                    sub = Subscribe(
+                    sub = Subscriber(
                         username=bcdata['user_name'],
                         channel=bcdata['channel_name'],
                         url=cmd[2],
-                        token=bcdata['token']
+                        token=bcdata['token'],
+                        subtype=cmd[3]
                     )
                     sub.save()
                     message = '订阅推送成功！'
             else:
-                message = '命令justpic sub <incoming url>！'
+                message = '命令justpic sub <incoming url> <subtype>  subtype可为weixin hacknews server weather'
         elif len(cmd) > 1 and cmd[1] == 'cancel':
-            Subscribe.objects.filter(username=bcdata['user_name'], channel=bcdata['channel_name'],
-                                     token=bcdata['token']).delete()
-            message = '取消推送成功'
+            if len(cmd)==2:
+                message='请指定取消推送消息类型 weixin hackernews server weather'
+            else:
+                sub=Subscriber.objects.filter(username=bcdata['user_name'], channel=bcdata['channel_name'],
+                                     token=bcdata['token'],subtype=cmd[2])
+                if sub==[]:
+                    message="您还没有订阅推送"
+                else:
+                    sub.delete()
+                    message = '取消推送成功'
         elif len(cmd) > 1 and cmd[1] == 'status':
             try:
-                subscriber = Subscribe.objects.get(usernames=bcdata['user_name'], channel=bcdata['channel_name'],
+                subscriber = Subscriber.objects.get(usernames=bcdata['user_name'], channel=bcdata['channel_name'],
                                                    token=bcdata['token'])
                 message = '已订阅推送服务'
             except ObjectDoesNotExist, e:

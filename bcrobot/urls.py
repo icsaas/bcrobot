@@ -10,5 +10,7 @@ urlpatterns = patterns('',
     url(r'^outcome','bearychat.views.outcome',name='outcome'),
     url(r'^ingo','bearychat.views.ingo',name='ingo'),
     url(r'^weixin','weixin.views.weixin'),
+    #hackernews
+    url(r'hn','hacknews.views.hn'),
     url(r'^admin/', include(admin.site.urls)),
 )

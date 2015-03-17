@@ -6,6 +6,7 @@ import  requests
 from celeryconfig import celery
 from bcrobot import settings
 from bearychat.models import Subscribe
+from hacknews.hnapi import HackerNewsAPI
 
 @celery.task(name="app.tasks.add")
 def add(x, y):
@@ -14,7 +15,7 @@ def add(x, y):
     return z
 
 # @celery.task
-def publish(message):
+def publish(message,subtype):
     payload={"text":message,"attachments":[{"title":"waiting","text":"no idea","color":"#ffa500"}]}
     headers = {'content=type': 'application/json'}
     #notify all user
@@ -42,5 +43,42 @@ def publish(message):
 def server_report():
     message='Server is OK'
     print 'haha'
-    publish(message)
+    publish(message,subtype='server')
     print "server report"
+
+@celery.task
+def publish_hn():
+    api=HackerNewsAPI()
+    stories=api.getNewestStories(2)
+    attachments=[]
+    for item in stories:
+        attadict={}
+        attadict['title']=item.title
+        attadict['text']="["+item.title +"]("+ item.URL+")"
+        attadict['color']='#ffa500'
+        attachments.append(attadict)
+
+    payload={"text":"HackNews","attachments":attachments}
+    headers = {'content=type': 'application/json'}
+    #notify all user
+    subscribers=Subscribe.objects.filter(subtype='hackernews')
+    for item in subscribers:
+        r=requests.post(item.url,json=payload,headers=headers )
+        print r
+        if not r.ok:
+            print 'error in publish function'
+
+@celery.task
+def publish_weather():
+    attachments=[]
+    payload={"text":"Weather","markdown":True,"attachments":attachments}
+    headers = {'content=type': 'application/json'}
+    #notify all user
+    subscribers=Subscribe.objects.filter(subtype='hackernews')
+    for item in subscribers:
+        r=requests.post(item.url,json=payload,headers=headers )
+        print r
+        if not r.ok:
+            print 'error in publish function'
+
+

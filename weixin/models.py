@@ -2,7 +2,7 @@
 from django.db import models
 from django.db.models.signals import post_save
 from django.conf import  settings
-from bearychat.models import Subscribe
+from bearychat.models import Subscriber
 import requests
 # Create your models here.
 
@@ -20,7 +20,7 @@ def notify_user(sender, instance, created, **kwargs):
         data = {"payload": '{"text":"new user"}'}
         session = requests.Session()
         #notify all subscribers
-        subscribers=Subscribe.objects.all()
+        subscribers=Subscriber.objects.filter(subtype='weixin')
         for item in subscribers:
             r=session.post(url=item.url,data=data)
             if not r.ok:
@@ -56,7 +56,7 @@ def notify_news(sender, instance, created, **kwargs):
         data = {"payload": '{"text":"微信有新闻已发布，可以输入justpic wx news查看最新新闻"}'}
         session = requests.Session()
         #notify all subscribers
-        subscribers=Subscribe.objects.all()
+        subscribers=Subscriber.objects.filter(subtype='weixin')
         for item in subscribers:
             r=session.post(url=item.url,data=data)
             if not r.OK:
