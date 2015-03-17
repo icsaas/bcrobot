@@ -10,13 +10,13 @@ bcrobot
 3.天气预报  
  输入城市，可以查看今天和明天的天气预报
 4.hacknews信息浏览，订阅推送后会每日得到hacknews更新，也可以输入命令即时查看hacknews。
-5.BearyChat外部用户聊天。
+5.BearyChat外部用户聊天。（Todo)
 
 
 ###使用方法：  
 下面以pydata微信公众号为例，介绍相关使用方法：   
 1.微信扫码 ![pydata](media/image/qrcode.jpg)  
-2.新建OutComing机器人，并填入触发词bcrobot 和 服务器地址http://bearychat.justpic.org/outcome  
+2.在BearyChat内新建OutComing机器人，并填入触发词bcrobot 和 服务器地址http://bearychat.justpic.org/outcome  
 3.新建InComing机器人，并复制订阅地址:http://hook.bearychat.com/<your_webhook_url>，  
 4.在聊天对话框中输入justpic sub http://hook.bearychat.com/your_webhook_url subtype,(注意空格,其中subtype可以为weixin,weather,server,hackernews),即可完成订阅推送服务。 
  在完成了订阅推送服务后，即可实时监听服务器运行状态和其他推送内容

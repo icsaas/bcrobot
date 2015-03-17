@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from bearychat.models import Subscriber
+from hacknews.hnapi import HackerNewsAPI
 from weixin.models import User, New, Message
 from utils.tianqi import weather
 import requests
@@ -117,15 +118,38 @@ def outcome(request):
                     print e
                     message = u"新闻发送失败，更正后重新发送"
         elif len(cmd) > 1 and cmd[1] == 'weather':
-            city = cmd[2] if len(cmd) > 2 else '重庆'
+            city = cmd[2] if len(cmd) > 2 else u'重庆'
             message = weather(city)
-            message="city "+message
+            message=city+" "+ message
+        elif len(cmd)>1 and cmd[1]=='hn':
+            option=cmd[2] if len(cmd)>2 else u'best'
+            api=HackerNewsAPI()
+            stories=[]
+            if option == "top":
+                stories = api.getTopStories(extra_page=1)
+            elif option == "newest":
+                stories = api.getNewestStories(extra_page=1)
+            elif option == "best":
+                stories = api.getBestStories(extra_page=1)
+            elif option=='help':
+                message = u'hacknews <top newest best> 三选一'
+            #拼装消息
+            message=""
+            for item in stories:
+                mess="["+item.title+"]("+item.URL+")  "
+                message+=mess
+            if message!="":
+                message="HackerNews  "+message
+                message+=u"没有获取到内容，可通过订阅hackernews推送服务可获得更好体验"
+
         elif len(cmd) > 1 and cmd[1] == 'help':
             message = u'bcrobot sub <incomgin url> subtype--订阅推送  ' \
                       u'bcrobot cancel--取消订阅推送 ' \
                       u'bcrobot status--查看订阅状态 ' \
                       u'bcrobot wx--微信公众号管理  ' \
-                      u'bcrobot weather <city>--天气预报  '
+                      u'bcrobot weather <city>--天气预报 ' \
+                      u'bcrobot hn <best newest top>--HackerNews消息浏览 '
+
 
         else:
             message = u'输入有误，bcrobot help查看帮助 或者查看https://gitcafe.com/matrixorz/bcrobot 了解详细情况'
@@ -134,11 +158,12 @@ def outcome(request):
                   u'bcrobot cancel--取消订阅推送 ' \
                   u'bcrobot status--查看订阅状态 ' \
                   u'bcrobot wx--微信公众号管理  ' \
-                  u'bcrobot weather <city>--天气预报  '
+                  u'bcrobot weather <city>--天气预报 ' \
+                  u'bcrobot hn <best newest top>--HackerNews消息浏览 '
     else:
         message = u"目前仅支持bcrobot命令，请输入 bcrobot help查看帮助"
     data = {"text": message, "markdown": True,
-            "attachments": [{"title": "", "text": "Cool! Attachments supported in Outcoming robot please inform matrix.orz@gmail.com to support bcrobot", "color": "#ffa500"}]}
+            "attachments": [{"title": "Notify Developer", "text": "Cool! Attachments supported in Outcoming robot please inform matrix.orz@gmail.com to support bcrobot", "color": "#ffa500"}]}
     # data = {"text": message, "markdown": True,
     # "attachments": [{"title": "Star Wars III", "text": "Return of the Jedi", "color": "#ffa500"}]}
     return HttpResponse(json.dumps(data))
