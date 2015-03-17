@@ -7,6 +7,7 @@ from celeryconfig import celery
 from bcrobot import settings
 from bearychat.models import Subscriber
 from hacknews.hnapi import HackerNewsAPI
+import json
 
 @celery.task(name="app.tasks.add")
 def add(x, y):
@@ -14,17 +15,6 @@ def add(x, y):
     print("{} + {} = {}".format(x, y, z))
     return z
 
-# @celery.task
-def publish(message,subtype):
-    payload={"text":message,"attachments":[{"title":"服务器运行状况","text":"正常","color":"#ffa500"}]}
-    headers = {'content=type': 'application/json'}
-    #notify all user
-    subscribers=Subscriber.objects.all()
-    for item in subscribers:
-        r=requests.post(item.url,json=payload,headers=headers )
-        print r
-        if not r.ok:
-            print 'error in publish function'
     #
     # r=requests.post(settings.BC_WEBHOOK,json=payload,headers=headers)
     # if r.ok:
@@ -41,13 +31,15 @@ def publish(message,subtype):
 
 @celery.task
 def server_report():
-    payload={"text":"来自服务器的消息","attachments":[{"title":"服务器运行状况","text":"正常","color":"#ffa500"}]}
+    data={"text":"来自服务器的消息","attachments":[{"title":"服务器运行状况","text":"正常","color":"#ffa500"}]}
     headers = {'content=type': 'application/json'}
     #notify all user
     subscribers=Subscriber.objects.filter(subtype='server')
     for item in subscribers:
-        payload['text']=item.username+" "+payload['text']
-        r=requests.post(item.url,json=payload,headers=headers )
+        data['text']=item.username+" "+data['text']
+        # r=requests.post(item.url,json=data,headers=headers )
+        r=requests.post(settings.BC_WEBHOOK,data={'payload':json.dumps(data)})
+
         print r
         if not r.ok:
             print 'error in publish function'
@@ -65,13 +57,15 @@ def publish_hn():
         attadict['color']='#ffa500'
         attachments.append(attadict)
 
-    payload={"text":"HackNews","attachments":attachments}
+    data={"text":"HackNews","attachments":attachments}
     headers = {'content=type': 'application/json'}
     #notify all user
     subscribers=Subscriber.objects.filter(subtype='hackernews')
     for item in subscribers:
-        payload['text']=item.username+" "+payload['text']
-        r=requests.post(item.url,json=payload,headers=headers )
+        data['text']=item.username+" "+data['text']
+        # r=requests.post(item.url,json=data,headers=headers )
+        r=requests.post(settings.BC_WEBHOOK,data={'payload':json.dumps(data)})
+
         print r
         if not r.ok:
             print 'error in publish function'
@@ -79,13 +73,15 @@ def publish_hn():
 @celery.task
 def publish_weather():
     attachments=[]
-    payload={"text":"Weather","markdown":True,"attachments":attachments}
+    data={"text":"Weather","markdown":True,"attachments":attachments}
     headers = {'content=type': 'application/json'}
     #notify all user
     subscribers=Subscriber.objects.filter(subtype='hackernews')
     for item in subscribers:
-        payload['text']=item.username+" "+payload['text']
-        r=requests.post(item.url,json=payload,headers=headers )
+        data['text']=item.username+" "+data['text']
+        # r=requests.post(item.url,json=data,headers=headers )
+        r=requests.post(settings.BC_WEBHOOK,data={'payload':json.dumps(data)})
+
         print r
         if not r.ok:
             print 'error in publish function'

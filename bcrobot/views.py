@@ -10,9 +10,10 @@ import json
 # Create your views here.
 def home(request):
     #method1 post json to the server
-    payload={"text":"caohai123","attachments":[{"title":"Star Wars III","text":"Return of the Jedi","color":"#ffa500"}]}
-    headers = {'content=type': 'application/json'}
-    r=requests.post(settings.BC_WEBHOOK,json=payload,headers=headers)
+    data={"text":"someone has go into index page","attachments":[{"title":"Star Wars III","text":"Return of the Jedi","color":"#ffa500"}]}
+    headers = {'content-type': 'application/json'}
+    # r=requests.post(settings.BC_WEBHOOK,json=data,headers=headers)
+    r=requests.post(settings.BC_WEBHOOK,data={'payload':json.dumps(data)})
     if r.ok:
         return render_to_response('index.html')
     #method2 post payload form data to server
