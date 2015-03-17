@@ -16,18 +16,26 @@ def hn(request):
     print type(bcdata['text'])
     api=HackerNewsAPI()
     stories=[]
+    cmd=bcdata['text'].split()
+    if len(cmd)>1:
+        cmd=cmd[1]
+    else:
+        cmd=''
     if cmd == "top":
         stories = api.getTopStories(extra_page=1)
     elif cmd == "newest":
         stories = api.getNewestStories(extra_page=1)
     elif cmd == "best":
         stories = api.getBestStories(extra_page=1)
+    elif cmd=='help':
+        message = 'hacknews <top newest best> 三选一'
     message=""
     for item in stories:
         mess="["+item.title+"]("+item.URL+")  "
         message+=mess
     if message!="":
         message="HackerNews  "+message
+        message+="订阅hacknews推送服务可获得更好体验"
     else:
         message="No HackerNews found"
     data = {"text": message, "markdown": True,

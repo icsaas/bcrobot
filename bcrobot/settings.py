@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'bearychat',
     'weixin',
+    'hacknews',
 )
 
 MIDDLEWARE_CLASSES = (
