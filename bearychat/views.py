@@ -25,7 +25,7 @@ def ingo(request):
     if r.ok:
         return render_to_response("index.html")
 
-        #method2 post payload form data to server
+        # method2 post payload form data to server
         # data = {"payload": '{"text":"haha"}'}
         # session = requests.Session()
         # r2 = session.post(url=settings.BC_WEBHOOK, data=data)
@@ -42,10 +42,10 @@ def outcome(request):
     if bcdata['text'].startswith('bcrobot'):
         cmd = bcdata['text'].split()
         if len(cmd) > 1 and cmd[1] == 'sub':
-            #store the bearychat room info: subscribe info
+            # store the bearychat room info: subscribe info
             if len(cmd) > 3:
                 try:
-                    sub = Subscriber.objects.get(usernames=bcdata['user_name'],token=bcdata['token'])
+                    sub = Subscriber.objects.get(usernames=bcdata['user_name'], token=bcdata['token'])
                     if sub is not None:
                         message = '已订阅推送，请尝试其他操作'
                 except ObjectDoesNotExist, e:
@@ -59,22 +59,26 @@ def outcome(request):
                     sub.save()
                     message = '订阅推送成功！'
             else:
-                message = '命令justpic sub <incoming url> <subtype>  subtype可为weixin hacknews server weather'
+                message = '命令bcrobot sub <incoming url> <subtype>  subtype可为weixin hacknews server weather'
         elif len(cmd) > 1 and cmd[1] == 'cancel':
-            if len(cmd)==2:
-                message='请指定取消推送消息类型 weixin hackernews server weather'
+            if len(cmd) == 2:
+                message = '请指定取消推送消息类型 weixin hackernews server weather'
             else:
-                sub=Subscriber.objects.filter(username=bcdata['user_name'], channel=bcdata['channel_name'],
-                                     token=bcdata['token'],subtype=cmd[2])
-                if sub==[]:
-                    message="您还没有订阅推送"
+                if cmd[2] != 'all':
+                    sub = Subscriber.objects.filter(username=bcdata['user_name'], channel=bcdata['channel_name'],
+                                                    token=bcdata['token'], subtype=cmd[2])
+                else:
+                    sub = Subscriber.objects.filter(username=bcdata['user_name'], channel=bcdata['channel_name'],
+                                                    token=bcdata['token'])
+                if sub == []:
+                    message = "您还没有订阅推送"
                 else:
                     sub.delete()
                     message = '取消推送成功'
         elif len(cmd) > 1 and cmd[1] == 'status':
             try:
                 subscriber = Subscriber.objects.get(usernames=bcdata['user_name'], channel=bcdata['channel_name'],
-                                                   token=bcdata['token'])
+                                                    token=bcdata['token'])
                 message = '已订阅推送服务'
             except ObjectDoesNotExist, e:
                 message = '未订阅推送服务'
@@ -134,5 +138,5 @@ def outcome(request):
     data = {"text": message, "markdown": True,
             "attachments": [{"title": "", "text": "Cool,Attachments supported in Outcoming robot", "color": "#ffa500"}]}
     # data = {"text": message, "markdown": True,
-    #         "attachments": [{"title": "Star Wars III", "text": "Return of the Jedi", "color": "#ffa500"}]}
+    # "attachments": [{"title": "Star Wars III", "text": "Return of the Jedi", "color": "#ffa500"}]}
     return HttpResponse(json.dumps(data))

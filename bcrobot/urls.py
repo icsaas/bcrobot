@@ -12,5 +12,6 @@ urlpatterns = patterns('',
     url(r'^weixin','weixin.views.weixin'),
     #hackernews
     url(r'hn','hacknews.views.hn'),
+    url(r'chat','chat.views.index'),
     url(r'^admin/', include(admin.site.urls)),
 )

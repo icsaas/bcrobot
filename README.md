@@ -16,19 +16,18 @@ bcrobot
 ###使用方法：  
 下面以pydata微信公众号为例，介绍相关使用方法：   
 1.微信扫码 ![pydata](media/image/qrcode.jpg)  
-2.新建OutComing机器人，并填入justpic 和 服务器地址http://bearychat.justpic.org/outcome  
+2.新建OutComing机器人，并填入触发词bcrobot 和 服务器地址http://bearychat.justpic.org/outcome  
 3.新建InComing机器人，并复制订阅地址:http://hook.bearychat.com/<your_webhook_url>，  
-4.在聊天对话框中输入justpic sub http://hook.bearychat.com/your_webhook_url,(注意空格),即可完成订阅推送服务。 
+4.在聊天对话框中输入justpic sub http://hook.bearychat.com/your_webhook_url subtype,(注意空格,其中subtype可以为weixin,weather,server,hackernews),即可完成订阅推送服务。 
  在完成了订阅推送服务后，即可实时监听服务器运行状态和其他推送内容
  发送justpic server可以即时得到当前服务器运行状态信息
-5.在聊天对话框中输入justpic wx 可进行微信管理功能，完成微信公众号状态监听，当没有订阅推送服务时，只能查询历史消息通知。  
-6.在聊天对话框中输入justpic tianqi查询天气状态（不需要订阅功能的支持)。  
-7.在聊天对话框中输入justpic hn显示hacknews列表(提供hot，latest选项）  
-8.在聊天对话框中输入justpic memo add <content> --记录备忘录,justpic memo list --显示备忘录条目 justpic memo remove <memoid> 删除备忘录条目  
-9.在聊天对话框中输入justpic price btc cny查看btc cny的报价。
-10.在聊天对话框中输入justpic cancel http://hook.bearychat.com/<your_webhook_url>,取消订阅推送服务。  
-11.在聊天对话框中输入justpic status 查看订阅推送服务状态
-12.在聊天对话狂中输入justpic chat <message>可以与BearyChat外部用户进行聊天
+5.在聊天对话框中输入bcrobot wx 可进行微信管理功能，完成微信公众号状态监听，当没有订阅推送服务时，只能查询历史消息通知。  
+6.在聊天对话框中输入bcrobot tianqi查询天气状态（不需要订阅功能的支持)。  
+7.在聊天对话框中输入bcrobot hn显示hacknews列表(提供hot，latest选项）  
+8.在聊天对话框中输入bcrobot price btc cny查看btc cny的报价。
+9.在聊天对话框中输入bcrobot cancel subtype/all,取消订阅推送服务/所有。  
+10.在聊天对话框中输入bcrobot status 查看订阅推送服务状态
+11.在聊天对话狂中输入bcrobot chat <message>可以与BearyChat外部用户进行聊天
 
 ###部署指南
 （部署于外部服务器）  
