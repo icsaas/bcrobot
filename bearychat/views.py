@@ -47,7 +47,7 @@ def outcome(request):
             # store the bearychat room info: subscribe info
             if len(cmd) > 3:
                 try:
-                    sub = Subscriber.objects.get(usernames=bcdata['user_name'], token=bcdata['token'])
+                    sub = Subscriber.objects.get(username=bcdata['user_name'], token=bcdata['token'])
                     if sub is not None:
                         message = '已订阅推送，请尝试其他操作'
                 except ObjectDoesNotExist, e:
@@ -79,7 +79,7 @@ def outcome(request):
                     message = '取消推送成功'
         elif len(cmd) > 1 and cmd[1] == 'status':
             try:
-                subscriber = Subscriber.objects.get(usernames=bcdata['user_name'], channel=bcdata['channel_name'],
+                subscriber = Subscriber.objects.get(username=bcdata['user_name'], channel=bcdata['channel_name'],
                                                     token=bcdata['token'])
                 message = '已订阅推送服务'
             except ObjectDoesNotExist, e:
