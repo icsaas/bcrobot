@@ -85,11 +85,12 @@ def outcome(request):
         elif len(cmd) > 1 and cmd[1] == 'wx':
             message = 'bcrobot wx users--显示微信关注用户  bcrobot wx news--显示微信推送消息 ' \
                       'bcrobot wx message <userid>--显示特定用户发送的消息 ' \
-                      'bcrobot wx pub <title> <description> <picurl> <url>--发布微信新闻消息'
+                      'bcrobot wx pub <title> <description> <picurl> <fromurl>--发布微信新闻消息'
             if len(cmd) > 2 and cmd[2] == 'users':
                 users = User.objects.all()
                 usernames = [item.FromUserName for item in users]
-                message = ','.join(usernames)
+                message = ','.join(usernames) if usernames!=[] else message
+
             elif len(cmd) > 2 and cmd[2] == 'news':
                 news = New.objects.order_by('-Chuangjianshijian')
                 i = 0
@@ -120,16 +121,16 @@ def outcome(request):
             message = weather(city)
             message="city "+message
         elif len(cmd) > 1 and cmd[1] == 'help':
-            message = 'bcrobot sub <incomgin url>--订阅推送  ' \
+            message = 'bcrobot sub <incomgin url> subtype--订阅推送  ' \
                       'bcrobot cancel--取消订阅推送 ' \
                       'bcrobot status--查看订阅状态 ' \
                       'bcrobot wx--微信公众号管理  ' \
                       'bcrobot weather <city>--天气预报  '
 
         else:
-            message = '输入有误，bcrobot help查看帮助'
+            message = '输入有误，bcrobot help查看帮助 或者查看https://gitcafe.com/matrixorz/bcrobot 了解详细情况'
     elif 'help' in bcdata['text']:
-        message = 'bcrobot sub <incomgin url>--订阅推送  ' \
+        message = 'bcrobot sub <incomgin url> subtype--订阅推送  ' \
                   'bcrobot cancel--取消订阅推送 ' \
                   'bcrobot status--查看订阅状态 ' \
                   'bcrobot wx--微信公众号管理  ' \
