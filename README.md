@@ -39,6 +39,10 @@ bcrobot
 6.启动redis-server，启动celery任务  
 7.点击[微信公众平台](https://mp.weixin.qq.com)进入开发者中心设置服务器地址  
 
+###说明
+由于outgoing机器人在接收响应请求后，对响应文本处理的长度有限制和attachments没有处理，hacknews在outgoing机器人下面不能正常使用，大家可以通过订阅推送每小时接收最新的HackerNews消息。
+
+
 
 
 

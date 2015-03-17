@@ -132,7 +132,7 @@ def outcome(request):
             elif option == "best":
                 stories = api.getBestStories(extra_page=1)
             elif option=='help':
-                message = u'hacknews <top newest best> 三选一'
+                message = u'bcrobot hn <top newest best> 三选一'
             #拼装消息
             message=""
             for item in stories:
@@ -140,7 +140,7 @@ def outcome(request):
                 message+=mess
             if message!="":
                 message="HackerNews  "+message
-                message+=u"没有获取到内容，或者受限于attachments，可通过订阅hackernews推送服务可获得更好体验"
+                message+=u"受限于attachments，可通过订阅hackernews推送服务可获得更好体验"
             else:
                 message=bcdata['user_name']+" "+message
 
