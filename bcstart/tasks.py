@@ -49,7 +49,7 @@ def publish_server():
 @celery.task
 def publish_hn():
     api=HackerNewsAPI()
-    stories=api.getNewestStories(2)
+    stories=api.getNewestStories(1)
     attachments=[]
     for item in stories:
         attadict={}
@@ -85,5 +85,7 @@ def publish_weather():
         print r
         if not r.ok:
             print 'error in publish function'
+
+
 
 
