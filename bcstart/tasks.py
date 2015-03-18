@@ -37,7 +37,7 @@ def publish_server():
     #notify all user
     subscribers=Subscriber.objects.filter(subtype='server')
     for item in subscribers:
-        data['text']=item.username+" "+data['text']
+        data['text']="@"+item.username+" "+data['text']
         # r=requests.post(item.url,json=data,headers=headers )
         r=requests.post(item.url,data={'payload':json.dumps(data)})
 
@@ -63,7 +63,7 @@ def publish_hn():
     #notify all user
     subscribers=Subscriber.objects.filter(subtype='hackernews')
     for item in subscribers:
-        data['text']=item.username+" "+data['text']
+        data['text']="@"+item.username+" "+data['text']
         # r=requests.post(item.url,json=data,headers=headers )
         r=requests.post(item.url,data={'payload':json.dumps(data)})
 
@@ -79,7 +79,7 @@ def publish_weather():
     #notify all user
     subscribers=Subscriber.objects.filter(subtype='weather')
     for item in subscribers:
-        data['text']=item.username+" "+data['text']
+        data['text']="@"+item.username+" "+data['text']
         # r=requests.post(item.url,json=data,headers=headers )
         r=requests.post(item.url,data={'payload':json.dumps(data)})
         print r

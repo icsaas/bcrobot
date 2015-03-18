@@ -174,6 +174,7 @@ def outcome(request):
                   u'bcrobot ai <message>--AI智能机器人聊天'
     else:
         message = u"目前仅支持bcrobot命令，请输入 bcrobot help查看帮助"
+    message="@"+bcdata['user_name']+" "+message
     data = {"text": message, "markdown": True,
             "attachments": [{"title": "Notify Developer", "text": "Cool! Attachments supported in Outcoming robot please inform matrix.orz@gmail.com to support bcrobot", "color": "#ffa500"}]}
     # data = {"text": message, "markdown": True,
