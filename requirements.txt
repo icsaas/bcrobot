@@ -4,3 +4,4 @@ lxml
 redis
 celery
 django-celery
+sentry

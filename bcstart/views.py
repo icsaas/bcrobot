@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
-from bearychat.models import Subscriber
+from bcstart.models import Subscriber
 from hacknews.hnapi import HackerNewsAPI
 from weixin.models import User, New, Message
 from utils.tianqi import weather
@@ -14,7 +14,8 @@ import requests
 import json
 from datetime import datetime
 # trial for bearychat InComing Robot
-
+from aiml import TalkBot
+bot = TalkBot()
 
 # Create your views here.
 def ingo(request):
@@ -62,7 +63,7 @@ def outcome(request):
                     sub.save()
                     message = u'订阅推送成功！'
             else:
-                message =u'命令bcrobot sub <incoming url> <subtype>  subtype可为weixin hacknews server weather'
+                message =u'命令bcrobot sub <incoming url> <subtype>  subtype可为weixin hackernews server weather'
         elif len(cmd) > 1 and cmd[1] == 'cancel':
             if len(cmd) == 2:
                 message = u'请指定取消推送消息类型 weixin hackernews server weather'
@@ -80,9 +81,15 @@ def outcome(request):
                     message = u'取消推送成功'
         elif len(cmd) > 1 and cmd[1] == 'status':
             try:
-                subscriber = Subscriber.objects.get(username=bcdata['user_name'], channel=bcdata['channel_name'],
+                subscribers = Subscriber.objects.filter(username=bcdata['user_name'], channel=bcdata['channel_name'],
                                                     token=bcdata['token'])
-                message = u'已订阅推送服务'
+                mess=""
+                if subscribers==[]:
+                    raise Exception
+                for item in subscribers:
+                    mess+=item.subtype
+                    mess+=" "
+                message = u'已订阅推送服务 '+mess
             except Exception, e:
                 message = u'未订阅推送服务'
         elif len(cmd) > 1 and cmd[1] == 'wx':
@@ -121,6 +128,9 @@ def outcome(request):
             city = cmd[2] if len(cmd) > 2 else u'重庆'
             message = weather(city)
             message=city+" "+ message
+        elif len(cmd)>1 and cmd[1]=='ai':
+            message = bot.respond(cmd[2] if len(cmd)>2 else '')
+
         elif len(cmd)>1 and cmd[1]=='hn':
             option=cmd[2] if len(cmd)>2 else u'best'
             api=HackerNewsAPI()
@@ -150,9 +160,8 @@ def outcome(request):
                       u'bcrobot status--查看订阅状态 ' \
                       u'bcrobot wx--微信公众号管理  ' \
                       u'bcrobot weather <city>--天气预报 ' \
-                      u'bcrobot hn <best newest top>--HackerNews消息浏览 '
-
-
+                      u'bcrobot hn <best newest top>--HackerNews消息浏览 ' \
+                      u'bcrobot ai <message>--AI智能机器人聊天'
         else:
             message = u'输入有误，bcrobot help查看帮助 或者查看https://gitcafe.com/matrixorz/bcrobot 了解详细情况'
     elif 'help' in bcdata['text']:
@@ -161,7 +170,8 @@ def outcome(request):
                   u'bcrobot status--查看订阅状态 ' \
                   u'bcrobot wx--微信公众号管理  ' \
                   u'bcrobot weather <city>--天气预报 ' \
-                  u'bcrobot hn <best newest top>--HackerNews消息浏览 '
+                  u'bcrobot hn <best newest top>--HackerNews消息浏览 ' \
+                  u'bcrobot ai <message>--AI智能机器人聊天'
     else:
         message = u"目前仅支持bcrobot命令，请输入 bcrobot help查看帮助"
     data = {"text": message, "markdown": True,

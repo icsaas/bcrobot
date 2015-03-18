@@ -36,9 +36,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bearychat',
     'weixin',
     'hacknews',
+    'bcstart',
 )
 
 MIDDLEWARE_CLASSES = (

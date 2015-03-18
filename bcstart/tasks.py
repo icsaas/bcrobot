@@ -6,7 +6,7 @@ import  requests
 # celery=Celery('tasks',broker=BROKER)
 from celeryconfig import celery
 from bcrobot import settings
-from bearychat.models import Subscriber
+from bcstart.models import Subscriber
 from hacknews.hnapi import HackerNewsAPI
 import json
 
@@ -77,12 +77,11 @@ def publish_weather():
     data={"text":"Weather","markdown":True,"attachments":attachments}
     headers = {'content=type': 'application/json'}
     #notify all user
-    subscribers=Subscriber.objects.filter(subtype='hackernews')
+    subscribers=Subscriber.objects.filter(subtype='weather')
     for item in subscribers:
         data['text']=item.username+" "+data['text']
         # r=requests.post(item.url,json=data,headers=headers )
         r=requests.post(item.url,data={'payload':json.dumps(data)})
-
         print r
         if not r.ok:
             print 'error in publish function'

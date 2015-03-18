@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 from django.shortcuts import render, render_to_response
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_exempt
@@ -10,7 +11,7 @@ import json
 # Create your views here.
 def home(request):
     #method1 post json to the server
-    data={"text":"someone has go into index page","attachments":[{"title":"Star Wars III","text":"Return of the Jedi","color":"#ffa500"}]}
+    data={"text":"被访问","attachments":[{"title":"Star Wars III","text":"Return of the Jedi","color":"#ffa500"}]}
     headers = {'content-type': 'application/json'}
     # r=requests.post(settings.BC_WEBHOOK,json=data,headers=headers)
     r=requests.post(settings.BC_WEBHOOK,data={'payload':json.dumps(data)})

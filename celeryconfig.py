@@ -11,17 +11,17 @@ celery.autodiscover_tasks(settings.INSTALLED_APPS, related_name='tasks')
 
 CELERYBEAT_SCHEDULE = {
     'every-day': {
-        'task': 'bearychat.tasks.publish_server',
+        'task': 'bcstart.tasks.publish_server',
         'schedule': timedelta(seconds=10),
         # 'schedule': crontab(hour='*/12'),
 
     },
     'every-moments':{
-        'task':'bearychat.tasks.publish_hn',
+        'task':'bcstart.tasks.publish_hn',
         'schedule':timedelta(seconds=10),
     },
     'every-night':{
-        'task':'bearychat.tasks.publish_weather',
+        'task':'bcstart.tasks.publish_weather',
         'schedule':timedelta(seconds=10),
         # 'schedule':crontab(hour='*/24'),
     }
@@ -30,5 +30,5 @@ CELERYBEAT_SCHEDULE = {
 BROKER_URL = "redis://localhost:6379/0"
 CELERYD_HIJACK_ROOT_LOGGER = True
 CELERY_RESULT_BACKEND = "redis"
-CELERY_IMPORTS = ("bearychat.tasks",)
+CELERY_IMPORTS = ("bcstart.tasks",)
 DJANGO_SETTINGS_MODULE = "bcrobot.settings"

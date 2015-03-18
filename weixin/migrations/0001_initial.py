@@ -11,6 +11,17 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
+            name='Message',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('message', models.CharField(max_length=100)),
+                ('sendtime', models.CharField(max_length=15)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
             name='New',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
@@ -18,7 +29,7 @@ class Migration(migrations.Migration):
                 ('Description', models.CharField(max_length=120, null=True, verbose_name=b'\xe5\x9b\xbe\xe6\x96\x87\xe6\x8f\x8f\xe8\xbf\xb0', blank=True)),
                 ('PicUrl', models.URLField(verbose_name=b'\xe5\x9b\xbe\xe7\x89\x87\xe9\x93\xbe\xe6\x8e\xa5')),
                 ('Url', models.URLField(verbose_name=b'\xe7\xbd\x91\xe9\xa1\xb5\xe9\x93\xbe\xe6\x8e\xa5')),
-                ('Chuangjianshijian', models.DateField(verbose_name=b'\xe5\x9b\xbe\xe6\x96\x87\xe6\xb6\x88\xe6\x81\xaf\xe5\x88\x9b\xe5\xbb\xba\xe6\x97\xb6\xe9\x97\xb4')),
+                ('Chuangjianshijian', models.DateTimeField(verbose_name=b'\xe5\x9b\xbe\xe6\x96\x87\xe6\xb6\x88\xe6\x81\xaf\xe5\x88\x9b\xe5\xbb\xba\xe6\x97\xb6\xe9\x97\xb4')),
             ],
             options={
                 'ordering': ['-Chuangjianshijian'],
@@ -38,5 +49,11 @@ class Migration(migrations.Migration):
             options={
             },
             bases=(models.Model,),
+        ),
+        migrations.AddField(
+            model_name='message',
+            name='user',
+            field=models.ForeignKey(to='weixin.User'),
+            preserve_default=True,
         ),
     ]
