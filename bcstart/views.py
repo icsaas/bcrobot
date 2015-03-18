@@ -129,7 +129,7 @@ def outcome(request):
             message = weather(city)
             message=city+" "+ message
         elif len(cmd)>1 and cmd[1]=='ai':
-            message = bot.respond(cmd[2] if len(cmd)>2 else '')
+            message = bot.respond(cmd[2] if len(cmd)>2 else '?')
 
         elif len(cmd)>1 and cmd[1]=='hn':
             option=cmd[2] if len(cmd)>2 else u'best'

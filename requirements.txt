@@ -5,3 +5,4 @@ redis
 celery
 django-celery
 sentry
+jieba
