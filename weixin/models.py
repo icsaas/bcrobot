@@ -2,6 +2,7 @@
 from django.db import models
 from django.db.models.signals import post_save
 from django.conf import  settings
+from bcstart.models import Subscriber
 import requests
 # Create your models here.
 
@@ -31,29 +32,29 @@ class New(models.Model):
     class Meta:
         ordering = ['-Chuangjianshijian']
 
-# def notify_user(sender, instance, created, **kwargs):
-#     if created:
-#         headers = {'content=type': 'application/json'}
-#         data = {"payload": '{"text":"微信有新用户关注，请查看"}'}
-#         session = requests.Session()
-#         #notify all subscribers
-#         subscribers=Subscriber.objects.filter(subtype='weixin')
-#         for item in subscribers:
-#             r=session.post(url=item.url,data=data)
-#             if not r.ok:
-#                 print 'subscribe error in notify user'
+def notify_user(sender, instance, created, **kwargs):
+    if created:
+        headers = {'content=type': 'application/json'}
+        data = {"payload": '{"text":"微信有新用户关注，请查看"}'}
+        session = requests.Session()
+        #notify all subscribers
+        subscribers=Subscriber.objects.filter(subtype='weixin')
+        for item in subscribers:
+            r=session.post(url=item.url,data=data)
+            if not r.ok:
+                print 'subscribe error in notify user'
 
-# post_save.connect(notify_user, sender=User)
+post_save.connect(notify_user, sender=User)
 
-# def notify_news(sender, instance, created, **kwargs):
-#     if created:
-#         headers = {'content=type': 'application/json'}
-#         data = {"payload": '{"text":"微信有新闻已发布，可以输入justpic wx news查看最新新闻"}'}
-#         session = requests.Session()
-#         #notify all subscribers
-#         subscribers=Subscriber.objects.filter(subtype='weixin')
-#         for item in subscribers:
-#             r=session.post(url=item.url,data=data)
-#             if not r.OK:
-#                 print 'subscribe error in notify news'
-# post_save.connect(notify_news, sender=New)
+def notify_news(sender, instance, created, **kwargs):
+    if created:
+        headers = {'content=type': 'application/json'}
+        data = {"payload": '{"text":"微信有新闻已发布，可以输入justpic wx news查看最新新闻"}'}
+        session = requests.Session()
+        #notify all subscribers
+        subscribers=Subscriber.objects.filter(subtype='weixin')
+        for item in subscribers:
+            r=session.post(url=item.url,data=data)
+            if not r.OK:
+                print 'subscribe error in notify news'
+post_save.connect(notify_news, sender=New)
